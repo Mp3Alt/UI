@@ -668,7 +668,7 @@ local drawing = {} do
                                 changechildrenpos(objmts[object], newpos)
                             end
                         else
-                            for _, object in next, objchildren[parent] do
+                            for _, object in next, objchildren[parent] do 
                                 local newpos = val + objpositions[object]
                                 newpos = Vector2.new(math.floor(newpos.X), math.floor(newpos.Y))
 
@@ -728,7 +728,10 @@ local drawing = {} do
                             changechildrenvis(self, istouching(v, obj.Size, mtobjs[customproperties.Parent].Position, mtobjs[customproperties.Parent].Size) and objvisibles[obj] or false)
                         end
 
-                        changechildrenpos(self, v)
+                        print(v)
+                        if v then
+                            changechildrenpos(self, v)
+                        end
                     end
 
                     v = v
