@@ -1322,7 +1322,13 @@ function library:Close()
         end
         self.cursor.Visible = self.open
     end
-    services.ContextActionService:UnbindAction("disablemousescroll")
+    if self.open then
+        services.ContextActionService:BindActionAtPriority("disablemousescroll", function() 
+            return Enum.ContextActionResult.Sink 
+        end, false, 3000, Enum.UserInputType.MouseWheel)
+    else
+        services.ContextActionService:UnbindAction("disablemousescroll")
+    end
 end
 
 function library:ChangeThemeOption(option, color)
