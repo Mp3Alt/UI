@@ -728,7 +728,6 @@ local drawing = {} do
                             changechildrenvis(self, istouching(v, obj.Size, mtobjs[customproperties.Parent].Position, mtobjs[customproperties.Parent].Size) and objvisibles[obj] or false)
                         end
 
-                        print(v)
                         if v then
                             changechildrenpos(self, v)
                         end
@@ -1304,7 +1303,7 @@ function library:GetConfigs(universal)
 
     return configs
 end
-local wasinfisrtperson = false;
+local wasinfisrtperson;
 function library:Close()
     self.open = not self.open
 
@@ -1316,14 +1315,11 @@ function library:Close()
 
     if self.cursor then
         if self.open then
-            if client.CameraMode == Enum.CameraMode.LockFirstPerson then
-                wasinfisrtperson = true;
-                client.CameraMode = Enum.CameraMode.Classic;
-            end
+            wasinfisrtperson = client.CameraMode;
+            print(wasinfisrtperson)
+            client.CameraMode = Enum.CameraMode.Classic;
         else
-            if wasinfisrtperson then
-                client.CameraMode = Enum.CameraMode.LockFirstPerson;
-            end
+            client.CameraMode = wasinfisrtperson;
         end
         self.cursor.Visible = self.open
     end
