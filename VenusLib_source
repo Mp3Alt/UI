@@ -1303,7 +1303,7 @@ function library:GetConfigs(universal)
 
     return configs
 end
-local wasinfisrtperson;
+local wasinfisrtperson = Enum.CameraMode.Classic;
 function library:Close()
     self.open = not self.open
 
