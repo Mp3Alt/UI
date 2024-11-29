@@ -1301,7 +1301,7 @@ function library:GetConfigs(universal)
 
     return configs
 end
-
+local wasinfisrtperson = false;
 function library:Close()
     self.open = not self.open
 
@@ -1312,6 +1312,16 @@ function library:Close()
     end
 
     if self.cursor then
+        if self.open then
+            if client.CameraMode == Enum.CameraMode.LockFirstPerson then
+                wasinfisrtperson = true;
+                client.CameraMode = Enum.CameraMode.Classic;
+            end
+        else
+            if wasinfisrtperson then
+                client.CameraMode = Enum.CameraMode.LockFirstPerson;
+            end
+        end
         self.cursor.Visible = self.open
     end
 end
