@@ -1316,13 +1316,13 @@ function library:Close()
     if self.cursor then
         if self.open then
             wasinfisrtperson = client.CameraMode;
-            print(wasinfisrtperson)
             client.CameraMode = Enum.CameraMode.Classic;
         else
             client.CameraMode = wasinfisrtperson;
         end
         self.cursor.Visible = self.open
     end
+    services.ContextActionService:UnbindAction("disablemousescroll")
 end
 
 function library:ChangeThemeOption(option, color)
