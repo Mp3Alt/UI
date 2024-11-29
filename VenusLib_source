@@ -1303,36 +1303,22 @@ function library:GetConfigs(universal)
 
     return configs
 end
-local wasinfisrtperson = Enum.CameraMode.Classic;
 function library:Close()
     self.open = not self.open
 
-    services.InputService.MouseIconEnabled = self.open
+    services.InputService.MouseIconEnabled = not self.open and self.mousestate or false
 
     if self.holder then
         self.holder.Visible = self.open
     end
 
     if self.cursor then
-        if self.open then
-            self.wasInFirstPerson = client.CameraMode == Enum.CameraMode.LockFirstPerson
-            client.CameraMode = Enum.CameraMode.Classic
-            services.InputService.MouseBehavior = Enum.MouseBehavior.Default
-        else
-            if self.wasInFirstPerson then
-                client.CameraMode = Enum.CameraMode.LockFirstPerson
-                services.InputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-            else
-                client.CameraMode = Enum.CameraMode.Classic
-                services.InputService.MouseBehavior = Enum.MouseBehavior.Default
-            end
-        end
-
         self.cursor.Visible = self.open
     end
-
     if self.open then
-        services.ContextActionService:BindActionAtPriority("disablemousescroll",function() return Enum.ContextActionResult.Sink end,false,3000,Enum.UserInputType.MouseWheel)
+        services.ContextActionService:BindActionAtPriority("disablemousescroll", function() 
+            return Enum.ContextActionResult.Sink
+        end, false, 3000, Enum.UserInputType.MouseWheel)
     else
         services.ContextActionService:UnbindAction("disablemousescroll")
     end
