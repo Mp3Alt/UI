@@ -986,10 +986,10 @@ function utility.dragify(object, dragoutline)
         if input.UserInputType == Enum.UserInputType.MouseButton1 and dragging then 
             dragging = false
             dragoutline.Visible = false
-            object.Position = currentpos
+            object.Position = currentpos or Vector2.new(0, 0)
         end
     end)
-end 
+end
 
 function utility.textlength(str, font, fontsize)
     local text = Drawing.new("Text")
