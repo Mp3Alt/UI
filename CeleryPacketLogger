@@ -683,20 +683,28 @@ do
             table.insert(hexParts, string.format("%02X", self.packetData[i]))
         end
 
-        local lines = {}
-        for i = 1, #hexParts, 15 do
-            local end_index = math.min(i + 14, #hexParts)
-            table.insert(lines, table.concat(hexParts, " ", i, end_index))
+        local hexdata = ""
+        if #hexParts >= 30 then
+            for i = 1, #hexParts, 1 do
+                if i % 30 == 0 then
+                    hexdata = hexdata .. hexParts[i] .. "\n"
+                else
+                    hexdata = hexdata .. hexParts[i] .. " "
+                end
+            end
         end
 
-        local packetData = table.concat(lines, "\n")
-
-        data.Text = self.dataType == "Hex" and packetData or table.concat(self.packetData, " ")
+        data.Text = self.dataType == "Hex" and hexdata or table.concat(self.packetData, " ")
         selectedPacket = self;
     end
 
     function templateModule:convert()
-        self.dataType = self.dataType == "Hex" and "Plain" or "Hex"
+        self.dataType = self.dataType == "Hex" and "Raw" or "Hex";
+        self:view();
+    end
+
+    function templateModule:getdatatype()
+        return self.dataType;
     end
 
 end
