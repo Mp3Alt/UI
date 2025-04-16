@@ -657,15 +657,15 @@ do
     templateModule = {};
     templateModule.__index = templateModule;
 
-    function templateModule.new(packetId, packetData)
+    function templateModule.new(packet)
         local self = setmetatable({}, templateModule);
-        self.packetId = packetId;
-        self.packetData = packetData;
-        self.packetSize = #packetData;
+        self.packetId = packet.id;
+        self.packetSize = packet.size;
+        self.packetData = packet.data;
 
         local packetButton = template:Clone();
-        packetButton.Name = packetId;
-        packetButton.Text = packetId;
+        packetButton.Name = self.packetId;
+        packetButton.Text = self.packetId;
         packetButton.Parent = holder;
         self.button = packetButton;
 
