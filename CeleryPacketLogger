@@ -1,0 +1,670 @@
+local plogger = Instance.new("ScreenGui")
+plogger.Name = "plogger"
+plogger.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
+plogger.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+plogger.Parent = game.Players.LocalPlayer.PlayerGui
+plogger.IgnoreGuiInset = true
+
+local Canvas = Instance.new("Frame")
+Canvas.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Canvas.AnchorPoint = Vector2.new(0.5, 0.5)
+Canvas.BackgroundTransparency = 1
+Canvas.Position = UDim2.new(0.5, 0, 0.5, 0)
+Canvas.Name = "Canvas"
+Canvas.Size = UDim2.new(1, 0, 1, 0)
+Canvas.BorderSizePixel = 0
+Canvas.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Canvas.Parent = plogger
+
+local background = Instance.new("Frame")
+background.ClipsDescendants = true
+background.BorderColor3 = Color3.fromRGB(0, 0, 0)
+background.AnchorPoint = Vector2.new(0.5, 0.5)
+background.SelectionGroup = true
+background.Name = "background"
+background.Position = UDim2.new(0.43020832538604736, 0, 0.30092594027519226, 0)
+background.Size = UDim2.new(0, 696, 0, 385)
+background.BorderSizePixel = 0
+background.AutomaticSize = Enum.AutomaticSize.X
+background.BackgroundColor3 = Color3.fromRGB(21, 21, 21)
+background.Parent = Canvas
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(36, 36, 36)
+UIStroke.Parent = background
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = background
+
+local logo = Instance.new("ImageButton")
+logo.BorderColor3 = Color3.fromRGB(0, 0, 0)
+logo.Name = "logo"
+logo.AnchorPoint = Vector2.new(0.5, 0.5)
+logo.Image = "rbxassetid://115522914317501"
+logo.BackgroundTransparency = 1
+logo.Position = UDim2.new(0.027298850938677788, 0, 0.04695052281022072, 0)
+logo.Size = UDim2.new(0, 25, 0, 25)
+logo.BorderSizePixel = 0
+logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+logo.Parent = background
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = logo
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(36, 36, 36)
+UIStroke.Parent = logo
+
+local close = Instance.new("ImageButton")
+close.ClipsDescendants = true
+close.BorderColor3 = Color3.fromRGB(0, 0, 0)
+close.AnchorPoint = Vector2.new(0.5, 0.5)
+close.Size = UDim2.new(0, 25, 0, 25)
+close.Name = "close"
+close.Position = UDim2.new(0.9712643623352051, 0, 0.04493029788136482, 0)
+close.Selectable = false
+close.Active = false
+close.BorderSizePixel = 0
+close.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+close.Parent = background
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = close
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(36, 36, 36)
+UIStroke.Parent = close
+
+local ImageLabel = Instance.new("ImageLabel")
+ImageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ImageLabel.Size = UDim2.new(0.699999988079071, 0, 0.699999988079071, 0)
+ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel.Image = "rbxassetid://10747384394"
+ImageLabel.BackgroundTransparency = 1
+ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel.ZIndex = 0
+ImageLabel.BorderSizePixel = 0
+ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ImageLabel.Parent = close
+
+local credit = Instance.new("TextLabel")
+credit.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+credit.TextTransparency = 0.9700000286102295
+credit.AnchorPoint = Vector2.new(0.5, 0.5)
+credit.ZIndex = 5
+credit.TextSize = 14
+credit.Size = UDim2.new(-0.125, 200, 0.052146464586257935, 0)
+credit.TextColor3 = Color3.fromRGB(255, 255, 255)
+credit.BorderColor3 = Color3.fromRGB(0, 0, 0)
+credit.Text = "Made by Mp3"
+credit.Name = "credit"
+credit.BackgroundTransparency = 1
+credit.Position = UDim2.new(0.09051723778247833, 0, 0.9551677703857422, 0)
+credit.TextWrapped = true
+credit.BorderSizePixel = 0
+credit.TextScaled = true
+credit.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+credit.Parent = background
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 16
+UITextSizeConstraint.Parent = credit
+
+local UIDragDetector = Instance.new("UIDragDetector")
+UIDragDetector.BoundingUI = Canvas
+UIDragDetector.Parent = background
+
+local Title = Instance.new("Frame")
+Title.ClipsDescendants = true
+Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Title.AnchorPoint = Vector2.new(0.5, 0.5)
+Title.Name = "Title"
+Title.Position = UDim2.new(0.4994562864303589, 0, 0.04631919413805008, 0)
+Title.Size = UDim2.new(0, 619, 0, 25)
+Title.BorderSizePixel = 0
+Title.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Title.Parent = background
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = Title
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(36, 36, 36)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = Title
+
+local text = Instance.new("TextLabel")
+text.TextWrapped = true
+text.TextColor3 = Color3.fromRGB(255, 255, 255)
+text.BorderColor3 = Color3.fromRGB(0, 0, 0)
+text.Text = "Celerys Packet Analyzer"
+text.Name = "text"
+text.Size = UDim2.new(0, 200, 1, 0)
+text.AnchorPoint = Vector2.new(0.5, 0.5)
+text.BorderSizePixel = 0
+text.BackgroundTransparency = 1
+text.Position = UDim2.new(0.5, 0, 0.5, 0)
+text.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+text.TextSize = 14
+text.TextScaled = true
+text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+text.Parent = Title
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 16
+UITextSizeConstraint.Parent = text
+
+local main = Instance.new("Frame")
+main.ClipsDescendants = true
+main.BorderColor3 = Color3.fromRGB(0, 0, 0)
+main.AnchorPoint = Vector2.new(0.5, 0.5)
+main.Name = "main"
+main.Position = UDim2.new(0.5840517282485962, 0, 0.5393866300582886, 0)
+main.Size = UDim2.new(0, 564, 0, 342)
+main.BorderSizePixel = 0
+main.BackgroundColor3 = Color3.fromRGB(21, 21, 21)
+main.Parent = background
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(36, 36, 36)
+UIStroke.Parent = main
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = main
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingTop = UDim.new(0, 5)
+UIPadding.Parent = main
+
+local packetData = Instance.new("CanvasGroup")
+packetData.Active = true
+packetData.BorderColor3 = Color3.fromRGB(25, 25, 25)
+packetData.AnchorPoint = Vector2.new(0.5, 0.5)
+packetData.Name = "packetData"
+packetData.Position = UDim2.new(0.5, 0, 0.38924527168273926, 0)
+packetData.Size = UDim2.new(0, 555, 0, 205)
+packetData.Selectable = true
+packetData.BorderSizePixel = 0
+packetData.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+packetData.Parent = main
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = packetData
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(31, 31, 31)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = packetData
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = packetData
+
+local Frame = Instance.new("Frame")
+Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+Frame.Position = UDim2.new(0.5, 0, 0.07073170691728592, 0)
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame.Size = UDim2.new(1, 0, 0, 30)
+Frame.BorderSizePixel = 0
+Frame.BackgroundColor3 = Color3.fromRGB(21, 21, 21)
+Frame.Parent = packetData
+
+local title = Instance.new("TextLabel")
+title.TextWrapped = true
+title.Name = "title"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+title.Text = "Packet Data:"
+title.Size = UDim2.new(1, 0, 1, 0)
+title.Position = UDim2.new(0.5, 0, 0.5, 0)
+title.AnchorPoint = Vector2.new(0.5, 0.5)
+title.BorderSizePixel = 0
+title.BackgroundTransparency = 1
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.TextScaled = true
+title.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+title.TextSize = 14
+title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+title.Parent = Frame
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = title
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingLeft = UDim.new(0, 5)
+UIPadding.Parent = Frame
+
+local scroll = Instance.new("ScrollingFrame")
+scroll.ScrollBarImageColor3 = Color3.fromRGB(48, 48, 48)
+scroll.Name = "scroll"
+scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+scroll.ScrollBarThickness = 6
+scroll.Size = UDim2.new(1, 0, 0.8560975790023804, 0)
+scroll.Selectable = false
+scroll.AnchorPoint = Vector2.new(0.5, 0.5)
+scroll.Position = UDim2.new(0.5, 0, 0.5719512104988098, 0)
+scroll.BackgroundTransparency = 1
+scroll.ScrollingDirection = Enum.ScrollingDirection.Y
+scroll.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+scroll.BorderColor3 = Color3.fromRGB(0, 0, 0)
+scroll.BorderSizePixel = 0
+scroll.CanvasSize = UDim2.new(0, 0, 1, 0)
+scroll.Parent = packetData
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 16
+UITextSizeConstraint.Parent = scroll
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingLeft = UDim.new(0, 5)
+UIPadding.Parent = scroll
+
+local data = Instance.new("TextBox")
+data.MultiLine = true
+data.CursorPosition = -1
+data.Active = false
+data.Selectable = false
+data.AnchorPoint = Vector2.new(0.5, 0)
+data.PlaceholderColor3 = Color3.fromRGB(68, 68, 68)
+data.PlaceholderText = "Packet data will show up here."
+data.TextSize = 100
+data.Size = UDim2.new(1, 0, 1, 0)
+data.TextColor3 = Color3.fromRGB(136, 136, 136)
+data.BorderColor3 = Color3.fromRGB(0, 0, 0)
+data.Text = ""
+data.Name = "data"
+data.Position = UDim2.new(0.5, 0, 0, 0)
+data.BorderSizePixel = 0
+data.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+data.BackgroundTransparency = 1
+data.TextXAlignment = Enum.TextXAlignment.Left
+data.ClearTextOnFocus = false
+data.TextYAlignment = Enum.TextYAlignment.Top
+data.AutomaticSize = Enum.AutomaticSize.Y
+data.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+data.Parent = scroll
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 16
+UITextSizeConstraint.Parent = data
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingTop = UDim.new(0, 5)
+UIPadding.PaddingBottom = UDim.new(0, 5)
+UIPadding.PaddingRight = UDim.new(0, 5)
+UIPadding.PaddingLeft = UDim.new(0, 5)
+UIPadding.Parent = data
+
+local topbar = Instance.new("CanvasGroup")
+topbar.Active = true
+topbar.BorderColor3 = Color3.fromRGB(25, 25, 25)
+topbar.AnchorPoint = Vector2.new(0.5, 0.5)
+topbar.Name = "topbar"
+topbar.Position = UDim2.new(0.5, 0, 0.031902097165584564, 0)
+topbar.Size = UDim2.new(0, 555, 0, 22)
+topbar.Selectable = true
+topbar.BorderSizePixel = 0
+topbar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+topbar.Parent = main
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = topbar
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(31, 31, 31)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = topbar
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = topbar
+
+local Size = Instance.new("TextLabel")
+Size.TextWrapped = true
+Size.TextColor3 = Color3.fromRGB(255, 255, 255)
+Size.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Size.Text = "Packet Size: ???"
+Size.Name = "Size"
+Size.Size = UDim2.new(0.1356130838394165, 200, 1, 0)
+Size.AnchorPoint = Vector2.new(0.5, 0.5)
+Size.BorderSizePixel = 0
+Size.BackgroundTransparency = 1
+Size.Position = UDim2.new(0.7452566623687744, 0, 0.5, 0)
+Size.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Size.TextSize = 14
+Size.TextScaled = true
+Size.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Size.Parent = topbar
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = Size
+
+local Id = Instance.new("TextLabel")
+Id.TextWrapped = true
+Id.TextColor3 = Color3.fromRGB(255, 255, 255)
+Id.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Id.Text = "Packet ID: ???"
+Id.Name = "Id"
+Id.Size = UDim2.new(0.13015279173851013, 200, 1, 0)
+Id.AnchorPoint = Vector2.new(0.5, 0.5)
+Id.BorderSizePixel = 0
+Id.BackgroundTransparency = 1
+Id.Position = UDim2.new(0.2538151443004608, 0, 0.5, 0)
+Id.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Id.TextSize = 14
+Id.TextScaled = true
+Id.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Id.Parent = topbar
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = Id
+
+local convert = Instance.new("TextButton")
+convert.TextWrapped = true
+convert.TextColor3 = Color3.fromRGB(255, 255, 255)
+convert.BorderColor3 = Color3.fromRGB(25, 25, 25)
+convert.Text = "Convert to Raw"
+convert.ClipsDescendants = true
+convert.Size = UDim2.new(0, 84, 0, 27)
+convert.AnchorPoint = Vector2.new(1, 0.5)
+convert.BorderSizePixel = 0
+convert.Name = "convert"
+convert.Position = UDim2.new(0.9929999709129333, 0, 0.7519999742507935, 0)
+convert.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+convert.AutomaticSize = Enum.AutomaticSize.X
+convert.TextScaled = true
+convert.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+convert.Parent = main
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = convert
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(31, 31, 31)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = convert
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = convert
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingRight = UDim.new(0, 10)
+UIPadding.PaddingLeft = UDim.new(0, 10)
+UIPadding.Parent = convert
+
+local sendPacket = Instance.new("TextButton")
+sendPacket.TextWrapped = true
+sendPacket.TextColor3 = Color3.fromRGB(255, 255, 255)
+sendPacket.BorderColor3 = Color3.fromRGB(25, 25, 25)
+sendPacket.Text = "Send Packet"
+sendPacket.ClipsDescendants = true
+sendPacket.Size = UDim2.new(0, 84, 0, 27)
+sendPacket.AnchorPoint = Vector2.new(0, 0.5)
+sendPacket.BorderSizePixel = 0
+sendPacket.Name = "sendPacket"
+sendPacket.Position = UDim2.new(0.007000000216066837, 0, 0.9480000138282776, 0)
+sendPacket.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+sendPacket.AutomaticSize = Enum.AutomaticSize.X
+sendPacket.TextScaled = true
+sendPacket.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+sendPacket.Parent = main
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = sendPacket
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(31, 31, 31)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = sendPacket
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = sendPacket
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingRight = UDim.new(0, 10)
+UIPadding.PaddingLeft = UDim.new(0, 10)
+UIPadding.Parent = sendPacket
+
+local blockPacket = Instance.new("TextButton")
+blockPacket.TextWrapped = true
+blockPacket.TextColor3 = Color3.fromRGB(255, 255, 255)
+blockPacket.BorderColor3 = Color3.fromRGB(25, 25, 25)
+blockPacket.Text = "Block Packet ID"
+blockPacket.ClipsDescendants = true
+blockPacket.Size = UDim2.new(0, 84, 0, 27)
+blockPacket.AnchorPoint = Vector2.new(0, 0.5)
+blockPacket.BorderSizePixel = 0
+blockPacket.Name = "blockPacket"
+blockPacket.Position = UDim2.new(0.006000000052154064, 0, 0.8529999852180481, 0)
+blockPacket.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+blockPacket.AutomaticSize = Enum.AutomaticSize.X
+blockPacket.TextScaled = true
+blockPacket.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+blockPacket.Parent = main
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = blockPacket
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(31, 31, 31)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = blockPacket
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = blockPacket
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingRight = UDim.new(0, 10)
+UIPadding.PaddingLeft = UDim.new(0, 10)
+UIPadding.Parent = blockPacket
+
+local clearLogs = Instance.new("TextButton")
+clearLogs.TextWrapped = true
+clearLogs.TextColor3 = Color3.fromRGB(255, 255, 255)
+clearLogs.BorderColor3 = Color3.fromRGB(25, 25, 25)
+clearLogs.Text = "Clear Logs"
+clearLogs.ClipsDescendants = true
+clearLogs.Size = UDim2.new(0, 84, 0, 27)
+clearLogs.AnchorPoint = Vector2.new(0, 0.5)
+clearLogs.BorderSizePixel = 0
+clearLogs.Name = "clearLogs"
+clearLogs.Position = UDim2.new(0.8428794741630554, 0, 0.9479554891586304, 0)
+clearLogs.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+clearLogs.AutomaticSize = Enum.AutomaticSize.X
+clearLogs.TextScaled = true
+clearLogs.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+clearLogs.Parent = main
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = clearLogs
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(31, 31, 31)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = clearLogs
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = clearLogs
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingRight = UDim.new(0, 10)
+UIPadding.PaddingLeft = UDim.new(0, 10)
+UIPadding.Parent = clearLogs
+
+local clearBlacklist = Instance.new("TextButton")
+clearBlacklist.TextWrapped = true
+clearBlacklist.TextColor3 = Color3.fromRGB(255, 255, 255)
+clearBlacklist.BorderColor3 = Color3.fromRGB(25, 25, 25)
+clearBlacklist.Text = "Clear Blacklist"
+clearBlacklist.ClipsDescendants = true
+clearBlacklist.Size = UDim2.new(0, 84, 0, 27)
+clearBlacklist.AnchorPoint = Vector2.new(0, 0.5)
+clearBlacklist.BorderSizePixel = 0
+clearBlacklist.Name = "clearBlacklist"
+clearBlacklist.Position = UDim2.new(0.6669999957084656, 0, 0.9480000138282776, 0)
+clearBlacklist.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+clearBlacklist.AutomaticSize = Enum.AutomaticSize.X
+clearBlacklist.TextScaled = true
+clearBlacklist.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+clearBlacklist.Parent = main
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = clearBlacklist
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(31, 31, 31)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = clearBlacklist
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = clearBlacklist
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingRight = UDim.new(0, 10)
+UIPadding.PaddingLeft = UDim.new(0, 10)
+UIPadding.Parent = clearBlacklist
+
+local copyPacket = Instance.new("TextButton")
+copyPacket.TextWrapped = true
+copyPacket.TextColor3 = Color3.fromRGB(255, 255, 255)
+copyPacket.BorderColor3 = Color3.fromRGB(25, 25, 25)
+copyPacket.Text = "Copy Packet"
+copyPacket.ClipsDescendants = true
+copyPacket.Size = UDim2.new(0, 84, 0, 27)
+copyPacket.AnchorPoint = Vector2.new(0, 0.5)
+copyPacket.BorderSizePixel = 0
+copyPacket.Name = "copyPacket"
+copyPacket.Position = UDim2.new(0.16500000655651093, 0, 0.9480000138282776, 0)
+copyPacket.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+copyPacket.AutomaticSize = Enum.AutomaticSize.X
+copyPacket.TextScaled = true
+copyPacket.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+copyPacket.Parent = main
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = copyPacket
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(31, 31, 31)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = copyPacket
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = copyPacket
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingRight = UDim.new(0, 10)
+UIPadding.PaddingLeft = UDim.new(0, 10)
+UIPadding.Parent = copyPacket
+
+local sidebar = Instance.new("Frame")
+sidebar.ClipsDescendants = true
+sidebar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+sidebar.AnchorPoint = Vector2.new(0.5, 0.5)
+sidebar.Name = "sidebar"
+sidebar.Position = UDim2.new(0.09051723778247833, 0, 0.5393866300582886, 0)
+sidebar.Size = UDim2.new(0, 113, 0, 342)
+sidebar.BorderSizePixel = 0
+sidebar.BackgroundColor3 = Color3.fromRGB(21, 21, 21)
+sidebar.Parent = background
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(36, 36, 36)
+UIStroke.Parent = sidebar
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = sidebar
+
+local holder = Instance.new("ScrollingFrame")
+holder.ScrollBarImageColor3 = Color3.fromRGB(40, 40, 40)
+holder.AutomaticCanvasSize = Enum.AutomaticSize.Y
+holder.ScrollBarThickness = 4
+holder.Name = "holder"
+holder.Size = UDim2.new(1, 0, 1, 0)
+holder.AnchorPoint = Vector2.new(0.5, 0.5)
+holder.Selectable = false
+holder.BackgroundTransparency = 1
+holder.Position = UDim2.new(0.5, 0, 0.5, 0)
+holder.BackgroundColor3 = Color3.fromRGB(21, 21, 21)
+holder.BorderColor3 = Color3.fromRGB(0, 0, 0)
+holder.BorderSizePixel = 0
+holder.CanvasSize = UDim2.new(0, 0, 0, 0)
+holder.Parent = sidebar
+
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Padding = UDim.new(0, 5)
+UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Parent = holder
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingBottom = UDim.new(0, 5)
+UIPadding.PaddingTop = UDim.new(0, 5)
+UIPadding.Parent = holder
+
+local templateInt = Instance.new("IntValue")
+templateInt.Name = "template"
+templateInt.Parent = holder
+
+local template = Instance.new("TextButton")
+template.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+template.TextColor3 = Color3.fromRGB(255, 255, 255)
+template.BorderColor3 = Color3.fromRGB(25, 25, 25)
+template.Text = "template"
+template.BorderSizePixel = 0
+template.Size = UDim2.new(0, 100, 0, 22)
+template.Name = "template"
+template.Position = UDim2.new(0.11061947047710419, 0, 0, 0)
+template.TextWrapped = true
+template.TextSize = 14
+template.TextScaled = true
+template.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+template.Parent = templateInt
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = template
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(31, 31, 31)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = template
+
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+UITextSizeConstraint.MaxTextSize = 14
+UITextSizeConstraint.Parent = template
+
+return {
+    -->> Background <<--
+    ["ScreenGui"] = Canvas,
+    ["Background"] = background,
+
+    ["Logo"] = logo,
+    ["Title"] = title,
+    ["Close"] = close,
+
+    -->> Packet Logs <<--
+    ["Sidebar"] = holder,
+    ["PacketTemplate"] = templateInt:WaitForChild"template",
+
+    -->> Packet Info <<--
+    ["PacketId"] = Id,
+    ["PacketSize"] = Size,
+    ["PacketData"] = data,
+
+    -->> Buttons <<--
+    ["SendPacket"] = sendPacket,
+    ["BlockPacket"] = blockPacket,
+    ["ClearLogs"] = clearLogs,
+    ["ClearBlacklist"] = clearBlacklist,
+    ["CopyPacket"] = copyPacket,
+    ["ConvertToRaw"] = convert,
+}
