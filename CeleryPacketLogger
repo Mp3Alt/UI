@@ -659,9 +659,9 @@ do
 
     function templateModule.new(packetId, packetData)
         local self = setmetatable({}, templateModule);
-        self.packetId = packetId;
+        self.packetId = `Packet ID: {packetId}`;
         self.packetData = packetData;
-        self.packetSize = #packetData;
+        self.packetSize = `Packet Size: {#packetData} bytes`;
 
         local packetButton = template:Clone();
         packetButton.Name = packetId;
