@@ -691,7 +691,7 @@ do
 
         local packetData = table.concat(lines, "\n")
 
-        data.Text = self.dataType == "Bytes" and packetData or table.concat(self.packetData, " ")
+        data.Text = self.dataType == "Hex" and packetData or table.concat(self.packetData, " ")
         selectedPacket = self;
     end
 
