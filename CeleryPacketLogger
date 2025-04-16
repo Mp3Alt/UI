@@ -663,6 +663,8 @@ do
         self.packetSize = packet.size;
         self.packetData = packet.data;
 
+        self.dataType = "Bytes"
+
         local packetButton = template:Clone();
         packetButton.Name = self.packetId;
         packetButton.Text = self.packetId;
@@ -675,9 +677,18 @@ do
     function templateModule:view()
         Id.Text   = `Packet ID: {self.packetId}`;
         Size.Text = `Packet Size: {self.packetSize} bytes`;
-        data.Text = self.packetData;
+
+        local packetData = ""
+        for i = 1, self.packetSize do
+            packetData = packetData .. string.format("%02X ", self.packetData[i])
+        end
+        data.Text = self.dataType == "Bytes" and packetData or table.concat(self.packetData, " ");
 
         selectedPacket = self;
+    end
+
+    function templateModule:convert()
+        self.dataType = self.dataType == "Bytes" and "Plain" or "Bytes"
     end
 
 end
