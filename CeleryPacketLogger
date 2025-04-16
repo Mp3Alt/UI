@@ -644,7 +644,7 @@ UITextSizeConstraint.Parent = template
 
 return {
     -->> Background <<--
-    ["ScreenGui"] = Canvas,
+    ["ScreenGui"] = plogger,
     ["Background"] = background,
 
     ["Logo"] = logo,
