@@ -708,5 +708,7 @@ return {
     ["ConvertToRaw"] = convert,
 
     -->> Modules <<--
-    ["Template_Module"] = templateModule,
+    ["Modules"] = {
+        ["Template"] = templateModule,
+    },
 }
