@@ -1,7 +1,5 @@
 if not game:IsLoaded() then game.Loaded:Wait(); end
 
-local selectedPacket = nil;
-
 local clonefunction = clonefunction or function(f) return (function(...) return f(...) end) end;
 local cloneref = cloneref or function(ref) return ref end;
 
@@ -443,7 +441,7 @@ local blockPacket = Instance.new("TextButton")
 blockPacket.TextWrapped = true
 blockPacket.TextColor3 = Color3.fromRGB(255, 255, 255)
 blockPacket.BorderColor3 = Color3.fromRGB(25, 25, 25)
-blockPacket.Text = "Block Packet ID"
+blockPacket.Text = "Block Packet"
 blockPacket.ClipsDescendants = true
 blockPacket.Size = UDim2.new(0, 84, 0, 27)
 blockPacket.AnchorPoint = Vector2.new(0, 0.5)
@@ -507,39 +505,39 @@ UIPadding.PaddingRight = UDim.new(0, 10)
 UIPadding.PaddingLeft = UDim.new(0, 10)
 UIPadding.Parent = clearLogs
 
-local clearBlacklist = Instance.new("TextButton")
-clearBlacklist.TextWrapped = true
-clearBlacklist.TextColor3 = Color3.fromRGB(255, 255, 255)
-clearBlacklist.BorderColor3 = Color3.fromRGB(25, 25, 25)
-clearBlacklist.Text = "Clear Blacklist"
-clearBlacklist.ClipsDescendants = true
-clearBlacklist.Size = UDim2.new(0, 84, 0, 27)
-clearBlacklist.AnchorPoint = Vector2.new(0, 0.5)
-clearBlacklist.BorderSizePixel = 0
-clearBlacklist.Name = "clearBlacklist"
-clearBlacklist.Position = UDim2.new(0.6669999957084656, 0, 0.9480000138282776, 0)
-clearBlacklist.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-clearBlacklist.AutomaticSize = Enum.AutomaticSize.X
-clearBlacklist.TextScaled = true
-clearBlacklist.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-clearBlacklist.Parent = main
+local clearBlocklist = Instance.new("TextButton")
+clearBlocklist.TextWrapped = true
+clearBlocklist.TextColor3 = Color3.fromRGB(255, 255, 255)
+clearBlocklist.BorderColor3 = Color3.fromRGB(25, 25, 25)
+clearBlocklist.Text = "Clear Blocklist"
+clearBlocklist.ClipsDescendants = true
+clearBlocklist.Size = UDim2.new(0, 84, 0, 27)
+clearBlocklist.AnchorPoint = Vector2.new(0, 0.5)
+clearBlocklist.BorderSizePixel = 0
+clearBlocklist.Name = "clearBlocklist"
+clearBlocklist.Position = UDim2.new(0.6669999957084656, 0, 0.9480000138282776, 0)
+clearBlocklist.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+clearBlocklist.AutomaticSize = Enum.AutomaticSize.X
+clearBlocklist.TextScaled = true
+clearBlocklist.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+clearBlocklist.Parent = main
 
 local UICorner = Instance.new("UICorner")
-UICorner.Parent = clearBlacklist
+UICorner.Parent = clearBlocklist
 
 local UIStroke = Instance.new("UIStroke")
 UIStroke.Color = Color3.fromRGB(31, 31, 31)
 UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UIStroke.Parent = clearBlacklist
+UIStroke.Parent = clearBlocklist
 
 local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
 UITextSizeConstraint.MaxTextSize = 14
-UITextSizeConstraint.Parent = clearBlacklist
+UITextSizeConstraint.Parent = clearBlocklist
 
 local UIPadding = Instance.new("UIPadding")
 UIPadding.PaddingRight = UDim.new(0, 10)
 UIPadding.PaddingLeft = UDim.new(0, 10)
-UIPadding.Parent = clearBlacklist
+UIPadding.Parent = clearBlocklist
 
 local copyPacket = Instance.new("TextButton")
 copyPacket.TextWrapped = true
@@ -652,18 +650,37 @@ UITextSizeConstraint.MaxTextSize = 14
 UITextSizeConstraint.Parent = template
 
 -->> Template Module <<--
-local templateModule;
-do
-    templateModule = {};
-    templateModule.__index = templateModule;
+local packetModule, allPackets, blockedPackets = {}, {}, {};
+do packetModule.__index = packetModule;
+    local function toHex(packetData)
+        local hexParts = {};
+        for i = 1, #packetData do
+            hexParts[i] = string.format("%02X", packetData[i]);
+        end
 
-    function templateModule.new(packet)
-        local self = setmetatable({}, templateModule);
+        if #hexParts == 0 then
+            return "";
+        end
+
+        local lines = {}
+        for i = 1, #hexParts, 30 do
+            table.insert(lines, table.concat(hexParts, " ", i, math.min(i + 30 - 1, #hexParts)));
+        end
+        return table.concat(lines, "\n");
+    end
+
+    function packetModule.new(packet)
+        if blockedPackets[packet.id] then
+            return nil;
+        end
+
+        local self = setmetatable({}, packetModule);
         self.packetId = packet.id;
         self.packetSize = packet.size;
         self.packetData = packet.data;
 
         self.dataType = "Hex"
+        self.IsBlocked = blockedPackets[packet.id];
 
         local packetButton = template:Clone();
         packetButton.Name = self.packetId;
@@ -671,42 +688,57 @@ do
         packetButton.Parent = holder;
         self.button = packetButton;
 
+        self.TableIndex = #allPackets + 1;
+        allPackets[self.TableIndex] = self;
         return self;
     end
 
-    function templateModule:view()
+    function packetModule:view()
         Id.Text   = `Packet ID: {self.packetId}`;
         Size.Text = `Packet Size: {self.packetSize} bytes`;
 
-        local hexParts = {}
-        for i = 1, self.packetSize do
-            table.insert(hexParts, string.format("%02X", self.packetData[i]))
-        end
-
-        local hexdata = ""
-        if #hexParts >= 30 then
-            for i = 1, #hexParts, 1 do
-                if i % 30 == 0 then
-                    hexdata = hexdata .. hexParts[i] .. "\n"
-                else
-                    hexdata = hexdata .. hexParts[i] .. " "
-                end
+        if self.dataType == "Hex" then
+            data.Text = toHex(self.packetData);
+        else
+            local lines = {}
+            for i = 1, #self.packetData, 30 do
+                table.insert(lines, table.concat(self.packetData, " ", i, math.min(i + 30 - 1, #self.packetData)));
             end
+            data.Text = table.concat(lines, "\n");
         end
-
-        data.Text = self.dataType == "Hex" and hexdata or table.concat(self.packetData, " ")
-        selectedPacket = self;
     end
 
-    function templateModule:convert()
+    function packetModule:convert()
         self.dataType = self.dataType == "Hex" and "Raw" or "Hex";
         self:view();
     end
 
-    function templateModule:getdatatype()
+    function packetModule:getdatatype()
         return self.dataType;
     end
 
+    function packetModule:block()
+        if blockedPackets[self.packetId] then
+            blockedPackets[self.packetId] = nil;
+        else
+            blockedPackets[self.packetId] = true;
+        end
+
+        self.IsBlocked = not not blockedPackets[self.packetId];
+        return self.IsBlocked;
+    end
+
+    function packetModule:isBlocked()
+        return self.IsBlocked;
+    end
+
+    function packetModule:clear()
+        self.button:Destroy();
+        self.button = nil;
+
+        allPackets[self.TableIndex] = nil;
+        return;
+    end
 end
 
 return {
@@ -731,12 +763,17 @@ return {
     ["SendPacket"] = sendPacket,
     ["BlockPacket"] = blockPacket,
     ["ClearLogs"] = clearLogs,
-    ["ClearBlacklist"] = clearBlacklist,
+    ["ClearBlocklist"] = clearBlocklist,
     ["CopyPacket"] = copyPacket,
     ["ConvertToRaw"] = convert,
 
     -->> Modules <<--
     ["Modules"] = {
-        ["Template"] = templateModule,
+        ["Packet"] = packetModule,
     },
+
+    -->> Variables <<--
+    ["BlockedPackets"] = blockedPackets,
+    ["AllPackets"] = allPackets,
+
 }
