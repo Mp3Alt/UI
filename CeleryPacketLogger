@@ -659,9 +659,9 @@ do
 
     function templateModule.new(packetId, packetData)
         local self = setmetatable({}, templateModule);
-        self.packetId = `Packet ID: {packetId}`;
+        self.packetId = packetId;
         self.packetData = packetData;
-        self.packetSize = `Packet Size: {#packetData} bytes`;
+        self.packetSize = #packetData;
 
         local packetButton = template:Clone();
         packetButton.Name = packetId;
@@ -673,8 +673,8 @@ do
     end
 
     function templateModule:view()
-        Id.Text   = self.packetId;
-        Size.Text = self.packetSize;
+        Id.Text   = `Packet ID: {self.packetId}`;
+        Size.Text = `Packet Size: {#self.packetSize} bytes`;
         data.Text = self.packetData;
 
         selectedPacket = self;
