@@ -3,14 +3,15 @@ if not game:IsLoaded() then game.Loaded:Wait(); end
 local selectedPacket = nil;
 
 local clonefunction = clonefunction or function(f) return (function(...) return f(...) end) end;
-local setmetatable = clonefunction(setmetatable);
+local cloneref = cloneref or function(ref) return ref end;
 
+local setmetatable = clonefunction(setmetatable);
 
 local plogger = Instance.new("ScreenGui")
 plogger.Name = "plogger"
 plogger.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
 plogger.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-plogger.Parent = game.Players.LocalPlayer.PlayerGui
+plogger.Parent = cloneref(game:GetService("CoreGui"))
 plogger.IgnoreGuiInset = true
 
 local Canvas = Instance.new("Frame")
