@@ -674,7 +674,7 @@ do
 
     function templateModule:view()
         Id.Text   = `Packet ID: {self.packetId}`;
-        Size.Text = `Packet Size: {#self.packetSize} bytes`;
+        Size.Text = `Packet Size: {self.packetSize} bytes`;
         data.Text = self.packetData;
 
         selectedPacket = self;
