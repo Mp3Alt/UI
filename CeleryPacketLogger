@@ -1,3 +1,11 @@
+if not game:IsLoaded() then game.Loaded:Wait(); end
+
+local selectedPacket = nil;
+
+local clonefunction = clonefunction or function(f) return (function(...) return f(...) end) end;
+local setmetatable = clonefunction(setmetatable);
+
+
 local plogger = Instance.new("ScreenGui")
 plogger.Name = "plogger"
 plogger.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
@@ -642,6 +650,37 @@ local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
 UITextSizeConstraint.MaxTextSize = 14
 UITextSizeConstraint.Parent = template
 
+-->> Template Module <<--
+local templateModule;
+do
+    templateModule = {};
+    templateModule.__index = templateModule;
+
+    function templateModule.new(packetId, packetData)
+        local self = setmetatable({}, templateModule);
+        self.packetId = packetId;
+        self.packetData = packetData;
+        self.packetSize = #packetData;
+
+        local packetButton = template:Clone();
+        packetButton.Name = packetId;
+        packetButton.Text = packetId;
+        packetButton.Parent = holder;
+        self.button = packetButton;
+
+        return self;
+    end
+
+    function templateModule:view()
+        Id.Text   = self.packetId;
+        Size.Text = self.packetSize;
+        data.Text = self.packetData;
+
+        selectedPacket = self;
+    end
+
+end
+
 return {
     -->> Background <<--
     ["ScreenGui"] = plogger,
@@ -653,7 +692,7 @@ return {
 
     -->> Packet Logs <<--
     ["Sidebar"] = holder,
-    ["PacketTemplate"] = templateInt:WaitForChild"template",
+    ["PacketTemplate"] = template,
 
     -->> Packet Info <<--
     ["PacketId"] = Id,
@@ -667,4 +706,7 @@ return {
     ["ClearBlacklist"] = clearBlacklist,
     ["CopyPacket"] = copyPacket,
     ["ConvertToRaw"] = convert,
+
+    -->> Modules <<--
+    ["Template_Module"] = templateModule,
 }
