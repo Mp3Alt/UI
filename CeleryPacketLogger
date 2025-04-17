@@ -718,8 +718,8 @@ do packetModule.__index = packetModule;
 
         local self = setmetatable({}, packetModule);
 
-        self.opcode = tonumber("0x"..string.format("%02X ", packet.id))
-        self.packetName = packetNames[self.opcode] or "Unknown";
+        self.opcode = "0x"..string.format("%02X ", packet.id)
+        self.packetName = packetNames[tonumber(self.opcode)] or "Unknown";
 
         self.packetId = packet.id;
         self.packetSize = packet.size;
