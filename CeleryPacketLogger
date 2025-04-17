@@ -723,15 +723,17 @@ do packetModule.__index = packetModule;
 
         self.packetId = packet.id;
         self.packetSize = packet.size;
+
+        table.remove(packet.data, 1);
         self.packetData = packet.data;
 
-        self.dataType = "Hex"
+        self.dataType = "Hex";
         self.IsBlocked = blockedPackets[packet.id];
 
         local packetButton = template:Clone();
 
-        packetButton.Name = self.packetName .. `({self.opcode})`;
-        packetButton.Text = self.packetName .. `({self.opcode})`;
+        packetButton.Name = self.packetName .. ` ({self.opcode})`;
+        packetButton.Text = self.packetName .. ` ({self.opcode})`;
         packetButton.Parent = holder;
         self.button = packetButton;
 
@@ -741,7 +743,7 @@ do packetModule.__index = packetModule;
     end
 
     function packetModule:view()
-        Id.Text   = `Packet ID: {self.packetId}`;
+        Id.Text   = `Packet ID: {self.opcode}`;
         Size.Text = `Packet Size: {self.packetSize} bytes`;
 
         if self.dataType == "Hex" then
