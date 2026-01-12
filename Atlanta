@@ -1,5 +1,20 @@
 -- Forked From: https://raw.githubusercontent.com/i77lhm/Libraries/refs/heads/main/Atlanta/Library.lua
 
+--[[
+	01/11/2026 (6:06)
+	BUG FIXES:
+		1. Fixed player list where when you click yourself it would error.
+		2. Fixed "Copy Join Script" so it used game:GetService("Players") instead of game.Players.
+		3. Fixed color picker always setting Rainbow to true.
+		4. Fixed "Max Player" slider to use actual server size limit instead of a hard coded value.
+		5. Fixed Tooltip spacing issue, and made it top-most.
+		5. Fixed Notifiaction spacing issue.
+		6. Replaced all ":Connect" with "library:connection" to clean up memory leaks
+
+	ADDITIONS:
+		1. Added Fallback character (StarterCharacter) to "Esp Preview", Reduced rotation of the character by 50%.
+]]
+
 
 -- REASON: Dumbass customer put their library in a request and flexed his non existant security and ended up getting it leaked by himself... 😭
 -- The code here is horrendous this is my 2nd library, the added on code was made to suit the old code however I should have just converted to a newer version of my code kind of an oopsie. 
@@ -7,6 +22,7 @@
 -- variables
 	local uis = cloneref(game:GetService("UserInputService"))
 	local players = cloneref(game:GetService("Players"))
+    local StarterPlayer = cloneref(game:GetService("StarterPlayer"))
 	local ws = cloneref(game:GetService("Workspace"))
 	local http_service = cloneref(game:GetService("HttpService"))
 	local gui_service = cloneref(game:GetService("GuiService"))
@@ -100,7 +116,9 @@
 		instances = {}; 
 		drawings = {};
 
-		display_orders = 0; 
+		display_orders = 0;
+
+        unloaded = false
 	}
 
 	local flags = library.flags
@@ -259,18 +277,18 @@
 				ZIndex = 1;
 			}) library:apply_theme(hover_instance, "accent", "BackgroundColor3") 
 
-			hover.MouseEnter:Connect(function()
+            library:connection(hover.MouseEnter, function()
 				library:tween(hover_instance, {
 					BackgroundTransparency = 0, 
 				}) 
 			end)
-			
-			hover.MouseLeave:Connect(function()
+
+            library:connection(hover.MouseLeave, function()
 				library:tween(hover_instance, {
 					BackgroundTransparency = 1, 
 				}) 
 			end)
-
+			
 			return hover_instance;
 		end 
 
@@ -308,7 +326,7 @@
 			local start 
 			local og_size = frame.Size  
 
-			Frame.InputBegan:Connect(function(input)
+            library:connection(Frame.InputBegan, function(input)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 then
 					resizing = true
 					start = input.Position
@@ -316,7 +334,7 @@
 				end
 			end)
 
-			Frame.InputEnded:Connect(function(input)
+            library:connection(Frame.InputEnded, function(input)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 then
 					resizing = false
 				end
@@ -351,7 +369,7 @@
 			local start_size = frame.Position
 			local start 
 
-			frame.InputBegan:Connect(function(input)
+            library:connection(frame.InputBegan, function(input)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 then
 					dragging = true
 					start = input.Position
@@ -370,7 +388,7 @@
 				end
 			end)
 
-			frame.InputEnded:Connect(function(input)
+            library:connection(frame.InputEnded, function(input)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 then
 					dragging = false
 				end
@@ -559,7 +577,7 @@
 			Enabled = true,
 			Parent = gethui(),
 			Name = "",
-			DisplayOrder = 500, 
+			DisplayOrder = 9999999, 
 		})
 
 		function library:tool_tip(options) 
@@ -568,7 +586,7 @@
 				path = options.path or nil, 
 			}
 
-			if cfg.path then 
+			if cfg.path then
 				local watermark_outline = library:create("Frame", {
 					Parent = tooltip_sgui,
 					Name = "",
@@ -623,17 +641,23 @@
 					BackgroundColor3 = rgb(255, 255, 255)
 				})
 				
-				local UIStroke = library:create("UIStroke", {
+				local UIPadding = library:create("UIPadding", {
+					Parent = watermark_background,
+					Name = "",
+                    PaddingRight = dim(0, 4),
+				})
+
+                local UIStroke = library:create("UIStroke", {
 					Parent = text,
 					Name = "",
 					LineJoinMode = Enum.LineJoinMode.Miter
 				})
 
-				cfg.path.MouseEnter:Connect(function()
+                library:connection(cfg.path.MouseEnter, function()
 					watermark_outline.Visible = true 
-				end)   
+				end)
 
-				cfg.path.MouseLeave:Connect(function()
+                library:connection(cfg.path.MouseLeave, function()
 					watermark_outline.Visible = false 
 				end)
 
@@ -708,8 +732,8 @@
 					library:create( "UIStroke" , {
 						Parent = Close
 					});         
-					
-					Close.MouseButton1Click:Connect(function()
+
+                    library:connection(Close.MouseButton1Click, function()
 						items.sgui.Enabled = false;
 					end)
 
@@ -920,11 +944,11 @@
 				library:tool_tip({name = cfg.name, path = items.button})
 			end 
 
-			items.sgui:GetPropertyChangedSignal("Enabled"):Connect(function()
+            library:connection(items.sgui:GetPropertyChangedSignal("Enabled"), function()
 				items.Icon.ImageColor3 = items.sgui.Enabled and themes.preset.accent or themes.preset.inline
 			end)
 
-			items.button.MouseButton1Click:Connect(function()
+            library:connection(items.button.MouseButton1Click, function()
 				items.sgui.Enabled = not items.sgui.Enabled
 			end)
 			
@@ -1639,8 +1663,9 @@
 				local watermark = library:watermark({default = os.date('Atlanta |  - %b %d %Y - %H:%M:%S')})  
 
 				task.spawn(function()
-					while task.wait(1) do 
+					while not (library and library.unloaded) do
 						watermark.change_text(os.date('Atlanta - Beta - %b %d %Y - %H:%M:%S'))
+                        task.wait(1)
 					end 
 				end) 
 
@@ -1714,7 +1739,7 @@
 				end})
 				section:button_holder({})
 				section:button({name = "Copy Join Script", callback = function()
-					setclipboard('game:GetService("TeleportService"):TeleportToPlaceInstance(' .. game.PlaceId .. ', "' .. game.JobId .. '", game.Players.LocalPlayer)')
+					setclipboard('game:GetService("TeleportService"):TeleportToPlaceInstance(' .. game.PlaceId .. ', "' .. game.JobId .. '", game:GetService("Players").LocalPlayer)')
 				end})
 				section:button_holder({})
 				section:button({name = "Rejoin", callback = function()
@@ -1729,7 +1754,7 @@
 						game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, data.id)
 					end 
 				end})
-				section:slider({name = "Max Players", flag = "max_players", min = 0, max = 40, default = 15, interval = 1})
+				section:slider({name = "Max Players", flag = "max_players", min = 0, max = players.MaxPlayers, default = players.MaxPlayers, interval = 1})
 			-- 
 
 			-- cfg holder
@@ -1780,15 +1805,19 @@
 					section:button({name = "Unload Menu", callback = function()
 						library:load_config(library.old_config)
 
+                        library.unloaded = true
+
+                        for _, connection in library.connections do 
+							connection:Disconnect()
+						end
+
 						for _, gui in library.guis do 
 							gui:Destroy() 
-						end 
-
-						for _, connection in library.connections do 
-							connection:Disconnect() 
 						end
 
 						blur:Destroy()
+
+                        library = nil
 					end})
 			-- 
 					
@@ -1822,7 +1851,7 @@
 				local section = column:section({name = "Playerlist"})
 				local playerlist = section:playerlist({})
 				section:dropdown({name = "Priority", items = {"Enemy", "Priority", "Neutral", "Friendly"}, default = "Neutral", flag = "PLAYERLIST_DROPDOWN", callback = function(text)
-					library.prioritize(text)
+                    library.prioritize(text)
 				end})
 			--  
 
@@ -1936,11 +1965,42 @@
 		end 
 
 		function library:esp_preview(properties)
-			local cfg = {items = {}, rotation = 0; objects = {};}
+			local cfg = {items = {}, rotation = 0, objects = {}, character = nil}
 
-			lp.Character.Archivable = true
-			local character = lp.Character:Clone()
-			character.Animate:Destroy()
+            if lp.Character then
+                lp.Character.Archivable = true
+                cfg.character = lp.Character:Clone()
+            elseif StarterPlayer:FindFirstChild("StarterCharacter") then
+                StarterPlayer:FindFirstChild("StarterCharacter").Archivable = true
+                cfg.character = StarterPlayer:FindFirstChild("StarterCharacter"):Clone()
+            end
+
+            local humanoid = cfg.character:FindFirstChildWhichIsA("Humanoid")
+            if humanoid then
+                local animate = cfg.character:FindFirstChild("Animate")
+                if animate then
+                    animate.Disabled = true
+                end
+
+                humanoid:ChangeState(Enum.HumanoidStateType.Physics)
+
+                local animator = humanoid:FindFirstChild("Animator")
+                if animator then
+                    for _, track in ipairs(animator:GetPlayingAnimationTracks()) do
+                        track:Stop(0)
+                    end
+
+                    local animation = Instance.new("Animation")
+                    animation.AnimationId = "rbxassetid://127972564618207"
+
+                    local track = animator:LoadAnimation(animation)
+                    track.Priority = Enum.AnimationPriority.Action
+                    track:Play()
+                end
+            else
+                print("[!]: Failed to find a character for esp preview... Exiting...")
+                return setmetatable(cfg, library)
+            end
 
 			local items = cfg.items; do 
 				items.viewportframe = library:create( "ViewportFrame" , {
@@ -1955,23 +2015,23 @@
 				});
 				
 				items.camera = library:create( "Camera" , {
-					FieldOfView = 70.00022888183594;
+					FieldOfView = 70;
 					CameraType = Enum.CameraType.Track;
 					Focus = cfr(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1); -- bro wtf is this serializer doing
 					CFrame = cfr(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 					Parent = ws;
 					Name = "\0"
-				}); 
+				});
 
 				items.viewportframe.CurrentCamera = items.camera -- sick
-				character.Parent = items.viewportframe
+				cfg.character.Parent = items.viewportframe
 
-				items.camera.CameraSubject = character
+				items.camera.CameraSubject = cfg.character
 
 				library:connection(run.RenderStepped, function()
 					task.wait()
-					cfg.rotation += 0.5
-					character:SetPrimaryPartCFrame(cfr(Vector3.new(0, 1, -6)) * angle(0, math.rad(cfg.rotation), 0))
+					cfg.rotation += 0.25
+					cfg.character:SetPrimaryPartCFrame(cfr(Vector3.new(0, 0.25, -6)) * angle(0, math.rad(cfg.rotation), 0))
 				end)
 			end 
 
@@ -2283,7 +2343,8 @@
 					return 
 				end
 
-				local humanoid = character.Humanoid
+				local humanoid = cfg.character:FindFirstChild("Humanoid")
+                if not humanoid then return end
 				
 				local multiplier = humanoid.MaxHealth * math.abs(math.sin(tick() * 2)) / humanoid.MaxHealth
 				local color = flags[ "Health_Low" ].Color:Lerp( flags["Health_High"].Color, multiplier)
@@ -2340,10 +2401,10 @@
 			end
 
 			task.spawn(function()
-				while true do 
-					task.wait()
+				while not (library and library.unloaded) do
 					cfg.change_health()
-				end 
+					task.wait()
+				end
 			end)
 
 			return setmetatable(cfg, library)
@@ -2418,6 +2479,12 @@
 					AutomaticSize = Enum.AutomaticSize.X,
 					TextSize = 12,
 					BackgroundColor3 = rgb(255, 255, 255)
+				})
+
+                local UIPadding = library:create("UIPadding", {
+					Parent = watermark_background,
+					Name = "",
+                    PaddingRight = dim(0, 4),
 				})
 		
 				local accent = library:create("Frame", {
@@ -2618,7 +2685,7 @@
 				end
 			end
 			
-			tab_holder.MouseButton1Click:Connect(cfg.open_tab)
+            library:connection(tab_holder.MouseButton1Click, cfg.open_tab)
 			
 			return setmetatable(cfg, library) 
 		end
@@ -2967,13 +3034,13 @@
 				CanvasSize = dim2(0, 0, 0, 0)
 			}) library:apply_theme(ScrollingFrame, "accent", "ScrollBarImageColor3") 
 
-			ScrollingFrame:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
+            library:connection(ScrollingFrame:GetPropertyChangedSignal("CanvasPosition"), function()
 				if library.current_element_open then 
 					library.current_element_open.set_visible(false)
 					library.current_element_open.open = false 
 					library.current_element_open = nil
 				end
-			end) 
+			end)
 
 			local elements = library:create("Frame", {
 				Parent = ScrollingFrame,
@@ -3226,7 +3293,7 @@
 					end 
 				end)
 
-				slider.MouseButton1Down:Connect(function()
+                library:connection(slider.MouseButton1Down, function()
 					cfg.dragging = true
 				end)
 			end
@@ -3415,7 +3482,8 @@
 			function cfg.set(bool)
 				library:tween(accent, {BackgroundTransparency = bool and 0 or 1})
 				flags[cfg.flag] = bool
-				
+				cfg.enabled = bool
+
 				cfg.callback(bool)
 			end
 
@@ -3459,6 +3527,7 @@
 				alpha = options.alpha or 1,
 				callback = options.callback or function() end,
 				right_holder = self.right_holder,
+                rainbow = options.rainbow or false
 			}
 
 			local dragging_sat = false 
@@ -3622,10 +3691,12 @@
 				section:button_holder({})
 				section:button({name = "Copy", callback = function()
 					library.copied_flag = flags[cfg.flag]
+                    library.copied_rainbow_state = RainbowToggle.enabled or false
+
 					library.is_rainbow = cfg.flag .. "_RAINBOW_FLAG"
 				end})
 				section:button({name = "Paste", callback = function()
-					RainbowToggle.set(library.is_rainbow)
+					RainbowToggle.set(library.copied_rainbow_state)
 					cfg.set(library.copied_flag.Color, library.copied_flag.Transparency)
 				end})
 
@@ -3905,7 +3976,8 @@
 				
 			function cfg.set_visible(bool)
 				colorpicker_holder.Visible = bool
-
+                colorpicker_holder.ZIndex = 1
+                
 				if bool then 
 					if library.current_element_open and library.current_element_open ~= cfg then 
 						library.current_element_open.set_visible(false)
@@ -3917,7 +3989,7 @@
 				end
 			end 
 
-			colorpicker_button.MouseButton1Click:Connect(function()		
+            library:connection(colorpicker_button.MouseButton1Click, function()		
 				cfg.open = not cfg.open
 
 				cfg.set_visible(cfg.open) 
@@ -3977,20 +4049,20 @@
 
 				cfg.set(nil, nil)
 			end
-			
-			alpha.MouseButton1Down:Connect(function()
-				dragging_alpha = true 
-			end)
 
-			hue.MouseButton1Down:Connect(function()
-				dragging_hue = true 
-			end)
+            library:connection(alpha.MouseButton1Down, function()
+                dragging_alpha = true 
+            end)
 
-			sat.MouseButton1Down:Connect(function()
-				dragging_sat = true  
-			end)
+            library:connection(hue.MouseButton1Down, function()
+                dragging_hue = true 
+            end)
 
-			uis.InputEnded:Connect(function(input)
+            library:connection(sat.MouseButton1Down, function()
+                dragging_sat = true 
+            end)
+
+            library:connection(uis.InputEnded, function(input)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 then
 					dragging_sat = false
 					dragging_hue = false
@@ -3998,22 +4070,22 @@
 				end
 			end)
 
-			uis.InputChanged:Connect(function(input)
+            library:connection(uis.InputChanged, function(input)
 				if (dragging_sat or dragging_hue or dragging_alpha) and input.UserInputType == Enum.UserInputType.MouseMovement then
 					cfg.update_color() 
 				end
-			end)	
+			end)
 
 			task.spawn(function()
-				while true do 
-					task.wait()
+				while not (library and library.unloaded) do
 					if flags[cfg.flag .. "_RAINBOW_FLAG"] then 
 						cfg.set(
 							hsv(math.abs(math.sin(tick())), 
 							s, 
 							v
 						), a) 
-					end     
+					end   
+                    task.wait()  
 				end     
 			end)
 
@@ -4366,31 +4438,28 @@
 
 
 				-- ok bro its 30 april2025.. what is this code from october 2024 💀💀
-				hold_button.MouseButton1Click:Connect(function()
+                library:connection(hold_button.MouseButton1Click, function()
 					cfg.set_mode("hold") 
 					cfg.set_visible(false)
 					cfg.open = false 
-				end) 
+				end)
 
-				toggle_button.MouseButton1Click:Connect(function()
+                library:connection(toggle_button.MouseButton1Click, function()
 					cfg.set_mode("toggle") 
 					cfg.set_visible(false)
 					cfg.open = false 
-				end) 
-
-				always_button.MouseButton1Click:Connect(function()
+				end)
+                library:connection(always_button.MouseButton1Click, function()
 					cfg.set_mode("always") 
 					cfg.set_visible(false)
 					cfg.open = false 
-				end) 
-				
-				element_outline.MouseButton2Click:Connect(function()
+				end)
+                library:connection(element_outline.MouseButton2Click, function()
 					cfg.open = not cfg.open 
 
 					cfg.set_visible(cfg.open)
 				end)
-
-				element_outline.MouseButton1Down:Connect(function()
+                library:connection(element_outline.MouseButton1Down, function()
 					task.wait()
 					key_text.Text = "none"	
 
@@ -4829,9 +4898,9 @@
 					end
 				end
 
-				text.Text = is_table and concat(selected, ", ") or selected[1] or "nun"
-				flags[cfg.flag] = is_table and selected or selected[1]
-				cfg.callback(flags[cfg.flag]) 
+				text.Text = is_table and concat(selected, ", ") or selected[1] or "LocalPlayer"
+				flags[cfg.flag] = (is_table and selected or selected[1]) or "LocalPlayer"
+				cfg.callback(flags[cfg.flag])
 			end
 			
 			function cfg:refresh_options(refreshed_list) 
@@ -4866,7 +4935,7 @@
 
 					insert(cfg.option_instances, TextButton)
 
-					TextButton.MouseButton1Down:Connect(function()
+                    library:connection(TextButton.MouseButton1Down, function()
 						if cfg.multi then 
 							local selected_index = find(cfg.multi_items, TextButton.Text)
 
@@ -4887,7 +4956,7 @@
 				end
 			end
 
-			dropdown.MouseButton1Click:Connect(function()
+            library:connection(dropdown.MouseButton1Click, function()
 				cfg.open = not cfg.open 
 
 				cfg.set_visible(cfg.open)
@@ -5103,7 +5172,7 @@
 
 					insert(cfg.option_instances, button)
 
-					button.MouseButton1Click:Connect(function()
+                    library:connection(button.MouseButton1Click, function()
 						if cfg.current_instance and cfg.current_instance ~= button then 
 							cfg.current_instance.TextColor3 = themes.preset.text 
 						end 
@@ -5288,8 +5357,8 @@
 					Padding = dim(0, 4),
 					SortOrder = Enum.SortOrder.LayoutOrder
 				})
-					
-				TextBox:GetPropertyChangedSignal("Text"):Connect(function()
+
+                library:connection(TextBox:GetPropertyChangedSignal("Text"), function()
 					flags[cfg.flag] = TextBox.text
 					cfg.callback(TextBox.text)
 				end)
@@ -5475,7 +5544,7 @@
 				LineJoinMode = Enum.LineJoinMode.Miter
 			})
 
-			button.MouseButton1Click:Connect(function()
+            library:connection(button.MouseButton1Click, function()
 				cfg.callback() 
 			end)
 
@@ -5583,7 +5652,8 @@
 				["Priority"] = rgb(255, 255, 0),
 				["Enemy"] = rgb(255, 0, 0),
 				["Neutral"] = themes.preset.text,
-				["Friendly"] = rgb(0, 255, 255)
+				["Friendly"] = rgb(0, 255, 255),
+                ["LocalPlayer"] = rgb(255, 255, 255),
 			}
 
 			-- elements 
@@ -5844,8 +5914,8 @@
 				path.priority = "Neutral"
 				path.priority_text = priority_text
 				-- library.selected_player = players[tostring(player)]
-				
-				TextButton.MouseButton1Click:Connect(function()
+
+                library:connection(TextButton.MouseButton1Click, function()
 					if player_name == lp.Name then 
 						return 
 					end 
@@ -5893,8 +5963,12 @@
 
 			function library.prioritize(text) 
 				if not library.selected_player then 
-					return 
-				end 
+					return
+				end
+
+                if library.selected_player == tostring(lp) then
+                    return
+                end
 
 				local path = library.playerlist_data[library.selected_player]
 				path.priority_text.Text = text
@@ -5910,8 +5984,8 @@
 				end 
 			end 
 
-			players.PlayerAdded:Connect(cfg.create_player)
-			players.PlayerRemoving:Connect(cfg.remove_player)
+            library:connection(players.PlayerAdded, cfg.create_player)
+            library:connection(players.PlayerRemoving, cfg.remove_player)
 			
 			for _, player in players:GetPlayers() do 
 				local player_object = cfg.create_player(player.Name)
@@ -5930,4 +6004,4 @@
 	-- 
 -- 
 
-return library, themes; 
+return library, themes
