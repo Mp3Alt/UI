@@ -15,6 +15,12 @@
 		1. Added Fallback character (StarterCharacter) to "Esp Preview", Reduced rotation of the character by 50%.
 ]]
 
+--[[
+	01/11/2026 (11:09)
+	ADDITIONS:
+		1. Added "Auto Execute" toggle when rejoining and server hopping.
+		2. Changed font saving/loading to use Font folder in "Workspace/Atlanta/Fonts".
+]]
 
 -- REASON: Dumbass customer put their library in a request and flexed his non existant security and ended up getting it leaked by himself... 😭
 -- The code here is horrendous this is my 2nd library, the added on code was made to suit the old code however I should have just converted to a newer version of my code kind of an oopsie. 
@@ -241,9 +247,9 @@
 
 	for _, path in next, library.folders do 
 		makefolder(library.directory .. path)
-	end 
+	end
 
-	writefile("ffff.ttf", game:HttpGet("https://github.com/weasely111/beta/raw/refs/heads/main/fs-tahoma-8px.ttf"))
+	writefile(library.directory.."/fonts/fs-tahoma-8px.ttf", game:HttpGet("https://github.com/weasely111/beta/raw/refs/heads/main/fs-tahoma-8px.ttf"))
 
 	local tahoma = {
 		name = "SmallestPixel7",
@@ -252,14 +258,13 @@
 				name = "Regular",
 				weight = 400,
 				style = "normal",
-				assetId = getcustomasset("ffff.ttf")
+				assetId = getcustomasset(library.directory.."/fonts/fs-tahoma-8px.ttf")
 			}
 		}
 	}
 
-	writefile("dddd.ttf", http_service:JSONEncode(tahoma))
-
-	library.font = Font.new(getcustomasset("dddd.ttf"), Enum.FontWeight.Regular)
+	writefile(library.directory.."/fonts/serialized-fs-tahoma-8px.ttf", http_service:JSONEncode(tahoma))
+	library.font = Font.new(getcustomasset(library.directory.."/fonts/serialized-fs-tahoma-8px.ttf"), Enum.FontWeight.Regular)
 
 	local config_holder 
 -- 
@@ -1743,14 +1748,17 @@
 				end})
 				section:button_holder({})
 				section:button({name = "Rejoin", callback = function()
+                    if flags["auto_execute"] and queue_on_teleport then queue_on_teleport([[print('Auto Execute Enabled! You can either fully implement this, or I will do it in the future.')]]) end
 					game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, lp)
 				end})
+                section:toggle({name = "Auto Execute", flag = "auto_execute"})
 				section:button_holder({})
 				section:button({name = "Join New Server", callback = function()
 					local apiRequest = game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
 					local data = apiRequest.data[random(1, #apiRequest.data)]
 						
-					if data.playing <= flags["max_players"] then 
+					if data.playing <= flags["max_players"] then
+                        if flags["auto_execute"] and queue_on_teleport then queue_on_teleport([[print('Auto Execute Enabled! You can either fully implement this, or I will do it in the future.')]]) end
 						game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, data.id)
 					end 
 				end})
