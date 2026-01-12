@@ -1670,7 +1670,7 @@ local directory, queue_on_teleport_payload = ...
 				local watermark = library:watermark({default = os.date(library.directory..' |  - %b %d %Y - %H:%M:%S')})  
 
 				task.spawn(function()
-					while not (library and library.unloaded) do
+					while library and not library.unloaded do
 						watermark.change_text(os.date(library.directory..' - Beta - %b %d %Y - %H:%M:%S'))
                         task.wait(1)
 					end 
@@ -2411,7 +2411,7 @@ local directory, queue_on_teleport_payload = ...
 			end
 
 			task.spawn(function()
-				while not (library and library.unloaded) do
+				while library and not library.unloaded do
 					cfg.change_health()
 					task.wait()
 				end
@@ -4087,7 +4087,7 @@ local directory, queue_on_teleport_payload = ...
 			end)
 
 			task.spawn(function()
-				while not (library and library.unloaded) do
+				while library and not library.unloaded do
 					if flags[cfg.flag .. "_RAINBOW_FLAG"] then 
 						cfg.set(
 							hsv(math.abs(math.sin(tick())), 
