@@ -25,6 +25,8 @@
 -- REASON: Dumbass customer put their library in a request and flexed his non existant security and ended up getting it leaked by himself... 😭
 -- The code here is horrendous this is my 2nd library, the added on code was made to suit the old code however I should have just converted to a newer version of my code kind of an oopsie. 
 
+local directory, queue_on_teleport_payload = ...
+
 -- variables
 	local uis = cloneref(game:GetService("UserInputService"))
 	local players = cloneref(game:GetService("Players"))
@@ -94,7 +96,7 @@
 
 -- library init
 	local library = {
-		directory = "Atlanta",
+		directory = (type(directory) == "string" and directory) or "Atlanta",
 		folders = {
 			"/fonts",
 			"/configs",
@@ -1748,7 +1750,7 @@
 				end})
 				section:button_holder({})
 				section:button({name = "Rejoin", callback = function()
-                    if flags["auto_execute"] and queue_on_teleport then queue_on_teleport([[print('Auto Execute Enabled! You can either fully implement this, or I will do it in the future.')]]) end
+                    if flags["auto_execute"] and queue_on_teleport then queue_on_teleport((type(queue_on_teleport_payload) == "string" and queue_on_teleport_payload) or [[print('Auto Execute Enabled! You can either fully implement this, or I will do it in the future.')]]) end
 					game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, lp)
 				end})
                 section:toggle({name = "Auto Execute", flag = "auto_execute"})
