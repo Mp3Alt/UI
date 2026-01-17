@@ -14,7 +14,7 @@ local gethui = gethui and gethui() or CoreGui;
 local ScreenGui = Instance.new('ScreenGui');
 
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global;
-ScreenGui.Parent = gethui();
+ScreenGui.Parent = gethui;
 
 local Toggles = {};
 local Options = {};
