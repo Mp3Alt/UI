@@ -3080,6 +3080,7 @@ function Fatality:CreateElements(Parent : Frame, ZIndex : number, Event : Bindab
 			res:change_default(Config.Default)
 
 			Config.Callback(args)
+			Config.Event:Fire(Config.Default)
 		end)
 
 		res:set_data(Config.Values);
