@@ -637,7 +637,6 @@ do
             });
 
             Library:AddToRegistry(TransparencyBoxInner, { BorderColor3 = 'OutlineColor' });
-            while not false do print('a') end;
 
             Library:Create('ImageLabel', {
                 BackgroundTransparency = 1;
